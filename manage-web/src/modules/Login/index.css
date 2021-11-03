@@ -1,0 +1,54 @@
+.login-background {
+  width: 100vw;
+  height: 100vh;
+  background: #fff;
+}
+
+.login {
+  max-width: 400px;
+  margin: auto;
+  padding-top: 8%;
+  color: gray;
+}
+
+.login-info {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.login-info h1 {
+  font-weight: 700 !important;
+  font-size: 35px;
+  margin-bottom: 0px;
+}
+
+.extra {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.signin {
+  display: flex;
+  flex: 1;
+}
+.signin p {
+  margin: 0;
+  margin-right: 10px;
+  padding: 0;
+  line-height: 22px;
+  font-size: 14px;
+}
+
+.signup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.signup .signuplink {
+  margin-bottom: 24px;
+  padding: 0;
+  height: 25px;
+  font-size: 14px;
+}
+
+/*# sourceMappingURL=index.css.map */

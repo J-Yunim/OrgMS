@@ -1,0 +1,156 @@
+.standardList {
+  color: aqua;
+}
+.standardList .ant-card-head {
+  border-bottom: none;
+}
+.standardList .ant-card-head-title {
+  line-height: 32px;
+  padding: 24px 0;
+}
+.standardList .ant-card-extra {
+  padding: 24px 0;
+}
+.standardList .ant-list-pagination {
+  text-align: right;
+  margin-top: 24px;
+}
+.standardList .ant-avatar-lg {
+  width: 48px;
+  height: 48px;
+  line-height: 48px;
+}
+.standardList .headerInfo {
+  position: relative;
+  text-align: center;
+}
+.standardList .headerInfo > span {
+  color: rgba(0, 0, 0, 0.45);
+  display: inline-block;
+  font-size: 14px;
+  line-height: 22px;
+  margin-bottom: 4px;
+}
+.standardList .headerInfo > p {
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 24px;
+  line-height: 32px;
+  margin: 0;
+}
+.standardList .headerInfo > em {
+  background-color: rgba(0, 0, 0, 0.06);
+  position: absolute;
+  height: 56px;
+  width: 1px;
+  top: 0;
+  right: 0;
+}
+.standardList .listContent {
+  font-size: 0;
+}
+.standardList .listContent .listContentItem {
+  color: rgba(0, 0, 0, 0.45);
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 14px;
+  margin-left: 40px;
+}
+.standardList .listContent .listContentItem > span {
+  line-height: 20px;
+}
+.standardList .listContent .listContentItem > p {
+  margin-top: 4px;
+  margin-bottom: 0;
+  line-height: 22px;
+}
+.standardList .extraContentSearch {
+  margin-left: 16px;
+  width: 272px;
+}
+
+@media screen and (max-width: 480px) {
+  .standardList :global .ant-list-item-content {
+    display: block;
+    flex: none;
+    width: 100%;
+  }
+  .standardList :global .ant-list-item-action {
+    margin-left: 0;
+  }
+  .standardList .listContent {
+    margin-left: 0;
+  }
+  .standardList .listContent > div {
+    margin-left: 0;
+  }
+  .standardList .listCard :global .ant-card-head-title {
+    overflow: visible;
+  }
+}
+@media screen and (max-width: 576px) {
+  .standardList .extraContentSearch {
+    margin-left: 0;
+    width: 100%;
+  }
+  .standardList .headerInfo {
+    margin-bottom: 16px;
+  }
+  .standardList .headerInfo > em {
+    display: none;
+  }
+}
+@media screen and (max-width: 768px) {
+  .standardList .listContent > div {
+    display: block;
+  }
+  .standardList .listContent > div:last-child {
+    top: 0;
+    width: 100%;
+  }
+
+  .listCard :global .ant-radio-group {
+    display: block;
+    margin-bottom: 8px;
+  }
+}
+@media screen and (max-width: 992px) and (min-width: 768px) {
+  .standardList .listContent > div {
+    display: block;
+  }
+  .standardList .listContent > div:last-child {
+    top: 0;
+    width: 100%;
+  }
+}
+@media screen and (max-width: 1200px) {
+  .standardList .listContent > div {
+    margin-left: 24px;
+  }
+  .standardList .listContent > div:last-child {
+    top: 0;
+  }
+}
+@media screen and (max-width: 1400px) {
+  .standardList .listContent {
+    text-align: right;
+  }
+  .standardList .listContent > div:last-child {
+    top: 0;
+  }
+}
+.standardListForm :global .ant-form-item {
+  margin-bottom: 12px;
+}
+.standardListForm :global .ant-form-item:last-child {
+  padding-top: 4px;
+  margin-bottom: 32px;
+}
+
+.formResult {
+  width: 100%;
+}
+.formResult [class^=title] {
+  margin-bottom: 8px;
+}
+
+/*# sourceMappingURL=index.css.map */
