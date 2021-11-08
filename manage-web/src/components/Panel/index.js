@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Space } from "antd";
+import Card from "../Card";
 
 const itemsFromBackend = [
-  { id: "1111", content: "First task" },
-  { id: "1112", content: "Second task" },
-  { id: "1113", content: "Third task" },
-  { id: "1114", content: "Fourth task" },
-  { id: "1115", content: "Fifth task" },
+  { id: "1111", content: <Card /> },
+  { id: "1112", content: <Card /> },
+  { id: "1113", content: <Card /> },
+  { id: "1114", content: <Card /> },
+  { id: "1115", content: <Card /> },
 ];
 
 const columnsFromBackend = {
@@ -74,13 +75,16 @@ function Panel() {
         display: "flex",
         justifyContent: "center",
         height: "100%",
-        overflowX: "auto",
       }}
     >
       <DragDropContext
         onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
       >
-        <Space direction="horizontal" size="middle">
+        <Space
+          direction="horizontal"
+          size="middle"
+          style={{ overflowX: "auto" }}
+        >
           {Object.entries(columns).map(([columnId, column], index) => {
             return (
               <div
@@ -102,12 +106,13 @@ function Panel() {
                           style={{
                             background: snapshot.isDraggingOver
                               ? "lightblue"
-                              : "lightgrey",
-                            padding: 5,
-                            width: "19vw",
-                            minWidth: 200,
+                              : "#DDC290",
+                            transition: "linear 0.3s",
+                            padding: 15,
+                            width: 270,
                             height: 500,
                             overflowY: "auto",
+                            borderRadius: "10px",
                           }}
                         >
                           {column.items.map((item, index) => {
@@ -120,18 +125,21 @@ function Panel() {
                                 {(provided, snapshot) => {
                                   return (
                                     <div
+                                      onDoubleClick={() =>
+                                        window.alert("Double clicked!")
+                                      }
                                       ref={provided.innerRef}
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                       style={{
                                         userSelect: "none",
-                                        padding: 16,
-                                        margin: "0 0 8px 0",
+                                        padding: 6,
+                                        margin: "0 0 10px 0",
                                         minHeight: "50px",
                                         backgroundColor: snapshot.isDragging
-                                          ? "#263B4A"
-                                          : "#456C86",
-                                        color: "white",
+                                          ? "white"
+                                          : "white",
+                                        borderRadius: "10px",
                                         ...provided.draggableProps.style,
                                       }}
                                     >

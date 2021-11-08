@@ -178,10 +178,10 @@ function Tasks() {
   return (
     <div className="tasks">
       <Tabs tabBarExtraContent={operations}>
-        <TabPane tab="Tab 1" key="1">
+        <TabPane tab="Project 1" key="1">
           <Panel />
         </TabPane>
-        <TabPane tab="Tab 2" key="2">
+        <TabPane tab="Project 2" key="2">
           <Panel />
         </TabPane>
       </Tabs>

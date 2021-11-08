@@ -24,6 +24,25 @@ const FormItem = Form.Item;
 const SelectOption = Select.Option;
 const { Search, TextArea } = Input;
 
+const data = [
+  {
+    title: "Member 1",
+    department: "Finance",
+  },
+  {
+    title: "Member 2",
+    department: "Outreach",
+  },
+  {
+    title: "Member 3",
+    department: "Policy",
+  },
+  {
+    title: "Member 4",
+    department: "Marketing",
+  },
+];
+
 function Members() {
   const [visible, setVisible] = useState(false);
   const [done, setDone] = useState(false);
@@ -189,7 +208,7 @@ function Members() {
             rowKey="id"
             loading={false}
             pagination={paginationProps}
-            dataSource={[]}
+            dataSource={data}
             renderItem={(item) => (
               <List.Item
                 actions={[
@@ -216,7 +235,11 @@ function Members() {
                   avatar={
                     <Avatar src={item.logo} shape="square" size="large" />
                   }
-                  title={<a href={item.href}>{item.title}</a>}
+                  title={
+                    <a
+                      href={item.href}
+                    >{`${item.title} [${item.department}]`}</a>
+                  }
                   description={item.subDescription}
                 />
                 <ListContent data={item} />

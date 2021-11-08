@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { findDOMNode } from "react-dom";
 import {
-  List,
   Card,
   Row,
   Col,
   Input,
   Button,
-  Avatar,
   Modal,
   Form,
   Select,
   Result,
   PageHeader as PageHeaderWrapper,
   Table,
+  Space,
+  Badge,
 } from "antd";
 
 import { PlusOutlined } from "@ant-design/icons";
@@ -25,87 +25,97 @@ const FormItem = Form.Item;
 const SelectOption = Select.Option;
 const { Search, TextArea } = Input;
 
+const statusMap = ["processing", "success", "error"];
+const status = ["Pending", "Approved", "Rejected"];
+
 const columns = [
   {
-    title: "Name",
-    dataIndex: "name",
-    filters: [
-      {
-        text: "Joe",
-        value: "Joe",
-      },
-      {
-        text: "Jim",
-        value: "Jim",
-      },
-      {
-        text: "Submenu",
-        value: "Submenu",
-        children: [
-          {
-            text: "Green",
-            value: "Green",
-          },
-          {
-            text: "Black",
-            value: "Black",
-          },
-        ],
-      },
-    ],
-    // specify the condition of filtering result
-    // here is that finding the name started with `value`
-    onFilter: (value, record) => record.name.indexOf(value) === 0,
-    sorter: (a, b) => a.name.length - b.name.length,
-    sortDirections: ["descend"],
+    title: "Requester",
+    dataIndex: "requester",
+    fixed: "left",
   },
   {
-    title: "Age",
-    dataIndex: "age",
+    title: "Department",
+    dataIndex: "department",
+  },
+  {
+    title: "Subject",
+    dataIndex: "subject",
+  },
+  {
+    title: "Category",
+    dataIndex: "category",
+  },
+  {
+    title: "Amount",
+    dataIndex: "amount",
     defaultSortOrder: "descend",
-    sorter: (a, b) => a.age - b.age,
+    sorter: (a, b) => a.amount - b.amount,
   },
   {
-    title: "Address",
-    dataIndex: "address",
-    filters: [
-      {
-        text: "London",
-        value: "London",
-      },
-      {
-        text: "New York",
-        value: "New York",
-      },
-    ],
-    onFilter: (value, record) => record.address.indexOf(value) === 0,
+    title: "Description",
+    dataIndex: "desc",
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
+    render(val) {
+      return <Badge status={statusMap[val]} text={status[val]} />;
+    },
+  },
+  {
+    title: "Action",
+    key: "action",
+    fixed: "right",
+    render: () => (
+      <Space size="middle">
+        <a>Accept</a>
+        <a>Decline</a>
+      </Space>
+    ),
   },
 ];
 
 const data = [
   {
     key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
+    requester: "John Brown1",
+    department: "Finance",
+    subject: "Retreat",
+    category: "...",
+    amount: 32,
+    desc: "New York No. 1 Lake Park",
+    status: 1,
   },
   {
     key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
+    requester: "John Brown2",
+    department: "Finance",
+    subject: "Retreat",
+    category: "...",
+    amount: -32,
+    desc: "New York No. 1 Lake Park",
+    status: 0,
   },
   {
     key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
+    requester: "John Brown3",
+    department: "Finance",
+    subject: "Retreat",
+    category: "...",
+    amount: 32,
+    desc: "New York No. 1 Lake Park",
+    status: 2,
   },
   {
     key: "4",
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park",
+    requester: "John Brown4",
+    department: "Finance",
+    subject: "Retreat",
+    category: "...",
+    amount: 32,
+    desc: "New York No. 1 Lake Park",
+    status: 0,
   },
 ];
 
@@ -228,10 +238,6 @@ function Finance() {
     total: 50,
   };
 
-  const ListContent = ({ data: { owner, createdAt, percent, status } }) => (
-    <div className="listContent" />
-  );
-
   function onChange(pagination, filters, sorter, extra) {
     console.log("params", pagination, filters, sorter, extra);
   }
@@ -278,46 +284,8 @@ function Finance() {
             dataSource={data}
             onChange={onChange}
             pagination={paginationProps}
+            scroll={{ x: 1200 }}
           />
-          {/* <List
-            size="large"
-            rowKey="id"
-            loading={false}
-            pagination={paginationProps}
-            dataSource={[]}
-            renderItem={(item) => (
-              <List.Item
-                actions={[
-                  <a
-                    onClick={(e) => {
-                      e.preventDefault();
-                      showEditModal(item);
-                    }}
-                  >
-                    Edit
-                  </a>,
-                  <a
-                    onClick={(e) => {
-                      e.preventDefault();
-                      editAndDelete("delete", item);
-                    }}
-                  >
-                    Delete
-                  </a>,
-                  // <MoreBtn current={item} />,
-                ]}
-              >
-                <List.Item.Meta
-                  avatar={
-                    <Avatar src={item.logo} shape="square" size="large" />
-                  }
-                  title={<a href={item.href}>{item.title}</a>}
-                  description={item.subDescription}
-                />
-                <ListContent data={item} />
-              </List.Item>
-            )}
-          /> */}
         </Card>
       </div>
       <Modal
