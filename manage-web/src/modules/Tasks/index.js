@@ -4,7 +4,6 @@ import "./index.css";
 import {
   Tabs,
   Button,
-  Tooltip,
   Dropdown,
   Menu,
   Modal,
@@ -24,6 +23,7 @@ function Tasks() {
   const [visible, setvisible] = useState(false);
   const [newProject, setnewProject] = useState(true);
   const [done, setDone] = useState(false);
+  const [current, setcurrent] = useState(null);
 
   const formLayout = {
     labelCol: { span: 7 },
@@ -179,7 +179,11 @@ function Tasks() {
     <div className="tasks">
       <Tabs tabBarExtraContent={operations}>
         <TabPane tab="Project 1" key="1">
-          <Panel />
+          <Panel
+            setModalVisible={setvisible}
+            setCurrent={setcurrent}
+            setnewProject={setnewProject}
+          />
         </TabPane>
         <TabPane tab="Project 2" key="2">
           <Panel />

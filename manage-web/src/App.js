@@ -7,6 +7,7 @@ import Main from "./modules/Main";
 import Login from "./modules/Login";
 
 import "antd/dist/antd.css";
+import Register from "./modules/Register";
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         <Router>
           <Switch>
             <Route path="/login" component={Login} />
-            <Route path="/" component={Main} />
+            <Route path="/register" component={Register} />
+            <Route exact path="/" component={Main} />
           </Switch>
         </Router>
       </Provider>

@@ -19,3 +19,22 @@
 .site-layout .site-layout-background {
   background: #fff;
 }
+
+.header-right {
+  margin-right: 20px;
+  display: flex;
+  .profile {
+    :hover {
+      color: #1890ff;
+    }
+    user-select: none;
+    cursor: pointer;
+  }
+  .notification {
+    margin-right: 20px;
+    cursor: pointer;
+    :hover {
+      color: #1890ff;
+    }
+  }
+}

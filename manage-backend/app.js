@@ -1,6 +1,7 @@
 // App config password: ArCof6oVIb0LundU
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 const app = express();
 const port = process.env.PORT || 8001; // process.env.port is Heroku's port if you choose to deploy the app there
@@ -9,6 +10,7 @@ const port = process.env.PORT || 8001; // process.env.port is Heroku's port if y
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/user");
 app.use(cookieParser());
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/", indexRouter);

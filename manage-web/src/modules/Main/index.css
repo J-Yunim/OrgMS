@@ -20,4 +20,23 @@
   background: #fff;
 }
 
+.header-right {
+  margin-right: 20px;
+  display: flex;
+}
+.header-right .profile {
+  user-select: none;
+  cursor: pointer;
+}
+.header-right .profile :hover {
+  color: #1890ff;
+}
+.header-right .notification {
+  margin-right: 20px;
+  cursor: pointer;
+}
+.header-right .notification :hover {
+  color: #1890ff;
+}
+
 /*# sourceMappingURL=index.css.map */

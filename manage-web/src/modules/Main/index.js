@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
-import { Layout, Menu } from "antd";
+import Cookies from "js-cookie";
+import { Layout, Menu, Badge, Popover } from "antd";
 import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
   UserOutlined,
   VideoCameraOutlined,
   UploadOutlined,
@@ -12,24 +11,34 @@ import {
 import Members from "../Members";
 import Tasks from "../Tasks";
 import Finance from "../Finance";
+import NavHeader from "../../components/NavHeader";
 
 import "./index.css";
+import { useDispatch, useSelector } from "react-redux";
 
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
+
+const userid = Cookies.get("userid");
 
 function Main() {
-  // parse url and see if login
-  const route = new URL(window.location.href).pathname.split("/")[1];
   const [collapsed, setcollapsed] = useState(false);
   const [menuItem, setmenuItem] = useState(1);
+
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const toggle = () => setcollapsed(!collapsed);
 
   const Contents = [<Members />, <Tasks />, <Finance />];
 
-  return (
+  async function getUser() {
+    return await dispatch.user.getUser();
+  }
+
+  return !userid ? (
+    <Redirect to={"/login"} />
+  ) : (
     <div className="main">
-      {/* <Redirect to={"/login"} /> */}
       <Layout style={{ minHeight: "100vh" }}>
         <Sider trigger={null} collapsible collapsed={collapsed}>
           <div className="logo" />
@@ -51,11 +60,7 @@ function Main() {
           </Menu>
         </Sider>
         <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 0 }}>
-            <div className="trigger" onClick={toggle}>
-              {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            </div>
-          </Header>
+          <NavHeader collapsed={collapsed} toggle={toggle} />
           <Content>{Contents[menuItem]}</Content>
         </Layout>
       </Layout>

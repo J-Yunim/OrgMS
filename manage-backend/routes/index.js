@@ -4,6 +4,8 @@ const { UserModel } = require("../db");
 
 const router = express.Router();
 
+const filter = { password: 0, __v: 0 }; // 指定过滤的属性
+
 router.get("/", (req, res) => {
   res.status(200).send("YEEEEES!!!!!!");
 });
@@ -46,25 +48,6 @@ router.post("/login", (req, res) => {
 });
 
 module.exports = router;
-
-// update info
-router.post("/update", function (req, res) {
-  const userid = req.cookies.userid;
-  if (!userid) {
-    return res.send({ code: 1, msg: "Login to your account" });
-  }
-  const newUser = req.body;
-  UserModel.findByIdAndUpdate({ _id: userid }, newUser, (err, user) => {
-    if (!user) {
-      res.clearCookie("userid");
-      res.send({ code: 1, msg: "Login to your account" });
-    } else {
-      const { _id, username } = user;
-      const data = Object.assign({ _id, username }, newUser);
-      res.send({ code: 0, data });
-    }
-  });
-});
 
 // get user info
 router.get("/user", function (req, res) {

@@ -1,6 +1,7 @@
 .taskcard {
   height: 100%;
   width: 100%;
+  padding: 2px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -17,9 +18,8 @@
 }
 
 .taskcard-tag {
-  border: 1px solid #707070;
   border-radius: 5px;
   background-color: #c9c9c9;
   padding: 0px 3px;
-  margin-right: 3px;
+  margin-right: 5px;
 }

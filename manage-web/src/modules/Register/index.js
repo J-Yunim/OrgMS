@@ -12,20 +12,20 @@ import "./index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
 
-function Login() {
+function Register() {
   const [loading, setloading] = useState(false);
   const [success, setsuccess] = useState(false);
   const dispatch = useDispatch();
 
   async function onFinish(values) {
     setloading(true);
-    const response = await dispatch.user.loginUser({
+    const response = await dispatch.user.registerUser({
       username: values.username,
       password: values.password,
     });
     console.log(response);
     if (response === 1) {
-      window.alert("Login Failed");
+      window.alert("Register Failed");
     } else {
       setsuccess(true);
     }
@@ -74,16 +74,32 @@ function Login() {
               />
             </Form.Item>
 
-            <Form.Item>
-              <div className="extra">
-                <Form.Item name="remember" valuePropName="checked" noStyle>
-                  <Checkbox>Remember me</Checkbox>
-                </Form.Item>
-
-                <a className="login-form-forgot" href="">
-                  Forgot your password?
-                </a>
-              </div>
+            <Form.Item
+              name="password2"
+              rules={[
+                { required: true, message: "Please confirm your password!" },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("password") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      new Error(
+                        "The two passwords that you entered do not match!"
+                      )
+                    );
+                  },
+                }),
+              ]}
+            >
+              <Input.Password
+                size="large"
+                placeholder="Confirm password"
+                prefix={<LockOutlined style={{ color: "grey" }} />}
+                iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                }
+              />
             </Form.Item>
 
             <Form.Item>
@@ -93,7 +109,7 @@ function Login() {
                 loading={loading}
                 style={{ width: "100%", height: 40, fontSize: 16 }}
               >
-                Log in
+                Register
               </Button>
             </Form.Item>
             <Form.Item name="signin">
@@ -108,8 +124,8 @@ function Login() {
                     </a>
                   </div>
                 </Form.Item>
-                <a className="signuplink" href="/register">
-                  Sign Up
+                <a className="signuplink" href="/login">
+                  Sign In
                 </a>
               </div>
             </Form.Item>
@@ -120,4 +136,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

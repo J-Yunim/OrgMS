@@ -30,7 +30,7 @@ const columnsFromBackend = {
   },
 };
 
-function Panel() {
+function Panel({ setModalVisible, setCurrent, setnewProject }) {
   const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
     const { source, destination } = result;
@@ -106,7 +106,7 @@ function Panel() {
                           style={{
                             background: snapshot.isDraggingOver
                               ? "lightblue"
-                              : "#DDC290",
+                              : "#91B0CE",
                             transition: "linear 0.3s",
                             padding: 15,
                             width: 270,
@@ -125,9 +125,11 @@ function Panel() {
                                 {(provided, snapshot) => {
                                   return (
                                     <div
-                                      onDoubleClick={() =>
-                                        window.alert("Double clicked!")
-                                      }
+                                      onDoubleClick={() => {
+                                        setModalVisible(true);
+                                        setCurrent(item);
+                                        setnewProject(false);
+                                      }}
                                       ref={provided.innerRef}
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
