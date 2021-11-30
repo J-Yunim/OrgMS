@@ -7,8 +7,7 @@ export const reqLogin = ({ username, password }) =>
 
 export const reqUser = () => ajax("/user");
 
-export const reqUserList = (type) => ajax("/userlist", { type });
-
-export const reqChatMsgList = () => ajax("/msglist");
-
-export const reqReadMsg = (from) => ajax("/readmsg", { from }, "POST");
+export const reqSaveTasks = (columns) =>
+  ajax("/savetasks", { columns }, "POST");
+export const reqSaveProject = (name) => ajax("/saveproject", { name }, "POST");
+export const reqGetTasks = () => ajax("/gettasks");

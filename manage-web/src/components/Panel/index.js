@@ -53,6 +53,7 @@ function Panel({ setModalVisible, setCurrent, setnewProject }) {
           items: destItems,
         },
       });
+      // send to backend
     } else {
       const column = columns[source.droppableId];
       const copiedItems = [...column.items];

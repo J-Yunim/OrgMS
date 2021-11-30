@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import Cookies from "js-cookie";
-import { Layout, Menu, Badge, Popover } from "antd";
+import { Layout, Menu, Badge, Popover, Empty } from "antd";
 import {
   UserOutlined,
   VideoCameraOutlined,
@@ -14,30 +14,46 @@ import Finance from "../Finance";
 import NavHeader from "../../components/NavHeader";
 
 import "./index.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const { Sider, Content } = Layout;
 
-const userid = Cookies.get("userid");
-
 function Main() {
+  const [success, setsuccess] = useState(false);
+
+  // const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const userid = Cookies.get("userid");
+
+  // useEffect(() => {
+  //   if (userid) {
+  //     getUser();
+  //   }
+  // }, [userid, getUser]);
+
+  async function getUser() {
+    const response = await dispatch.user.getUser();
+    if (response === 0) {
+      setsuccess(true);
+    }
+  }
+  if (userid) {
+    getUser();
+  }
+
+  return success ? <RenderMain /> : <a href="/login">Login to your account</a>;
+}
+
+function RenderMain() {
   const [collapsed, setcollapsed] = useState(false);
   const [menuItem, setmenuItem] = useState(1);
-
-  const user = useSelector((state) => state.user);
-  const dispatch = useDispatch();
 
   const toggle = () => setcollapsed(!collapsed);
 
   const Contents = [<Members />, <Tasks />, <Finance />];
 
-  async function getUser() {
-    return await dispatch.user.getUser();
-  }
-
-  return !userid ? (
-    <Redirect to={"/login"} />
-  ) : (
+  return (
     <div className="main">
       <Layout style={{ minHeight: "100vh" }}>
         <Sider trigger={null} collapsible collapsed={collapsed}>

@@ -24,7 +24,7 @@ const NotificationRow = () => {
   </div>;
 };
 
-const menu = (
+const notificationMenu = (
   <Menu>
     <Menu.Item key="0" icon={<CheckCircleFilled />}>
       Your request has been approved
@@ -36,6 +36,13 @@ const menu = (
     </Menu.Item>
     <Menu.Divider />
     <Menu.Item key="1000">Clear Notification</Menu.Item>
+  </Menu>
+);
+
+const profileMenu = (
+  <Menu>
+    <Menu.Item key="0">Log out</Menu.Item>
+    {/* <Menu.Divider /> */}
   </Menu>
 );
 
@@ -53,14 +60,16 @@ const NavHeader = ({ collapsed, toggle }) => {
       </div>
       <div className="header-right">
         <div className="notification">
-          <Dropdown overlay={menu} trigger={["click"]}>
+          <Dropdown overlay={notificationMenu} trigger={["click"]}>
             <Badge count={2}>
               <BellOutlined />
             </Badge>
           </Dropdown>
         </div>
         <div className="profile">
-          <div className="">{username}</div>
+          <Dropdown overlay={profileMenu} trigger={["click"]}>
+            <div className="">{username}</div>
+          </Dropdown>
         </div>
       </div>
     </Header>

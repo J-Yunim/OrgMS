@@ -12,7 +12,7 @@ import {
   Select,
   Input,
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, DeleteTwoTone } from "@ant-design/icons";
 import Panel from "../../components/Panel";
 
 const { TabPane } = Tabs;
@@ -178,7 +178,7 @@ function Tasks() {
   return (
     <div className="tasks">
       <Tabs tabBarExtraContent={operations}>
-        <TabPane tab="Project 1" key="1">
+        <TabPane tab={<span>Project 1</span>} key="1">
           <Panel
             setModalVisible={setvisible}
             setCurrent={setcurrent}
