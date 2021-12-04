@@ -3,14 +3,14 @@ import { reqGetTasks } from "../ajax";
 export const tasks = {
   state: {
     name: "",
-    columns: {}, // columns and tasks
+    columns: {}, // columns
   },
   reducers: {
     update(state, payload) {
       return { ...state, ...payload };
     },
   },
-  effects: {
+  effects: (dispatch) => ({
     async loadTasks() {
       const response = await reqGetTasks();
       const result = response.data;
@@ -23,7 +23,7 @@ export const tasks = {
         return 1;
       }
     },
-  },
-  async saveTasks(columns) {},
-  async saveName(name) {},
+    async saveTasks(columns) {},
+    async saveName(name) {},
+  }),
 };
