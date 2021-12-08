@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { findDOMNode } from "react-dom";
 import {
   List,
@@ -18,35 +18,25 @@ import {
 import { PlusOutlined } from "@ant-design/icons";
 
 import "./index.css";
+import { useDispatch, useSelector } from "react-redux";
 // import Result from "../../components/Result";
 
 const FormItem = Form.Item;
 const SelectOption = Select.Option;
 const { Search, TextArea } = Input;
 
-const data = [
-  {
-    title: "Member 1",
-    department: "Finance",
-  },
-  {
-    title: "Member 2",
-    department: "Outreach",
-  },
-  {
-    title: "Member 3",
-    department: "Policy",
-  },
-  {
-    title: "Member 4",
-    department: "Marketing",
-  },
-];
-
 function Members() {
   const [visible, setVisible] = useState(false);
   const [done, setDone] = useState(false);
   const [current, setcurrent] = useState("");
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch.members.getMembers();
+  }, []);
+
+  const { memberList } = useSelector((state) => state.members);
 
   var addBtn;
 
@@ -84,15 +74,11 @@ function Members() {
     // setTimeout(() => addBtn.blur(), 0);
     form
       .validateFields(["name", "email", "title", "department", "desc"])
-      .then(
-        (values) => {
-          setDone(true);
-        }
-        //   dispatch({
-        //     type: "list/submit",
-        //     payload: { id, ...fieldsValue },
-        //   });
-      )
+      .then((values) => {
+        setDone(true);
+        dispatch.members.saveMembers(values);
+        console.log(values);
+      })
       .catch((errInfo) => {
         return;
       });
@@ -208,7 +194,7 @@ function Members() {
             rowKey="id"
             loading={false}
             pagination={paginationProps}
-            dataSource={data}
+            dataSource={memberList}
             renderItem={(item) => (
               <List.Item
                 actions={[
@@ -238,9 +224,9 @@ function Members() {
                   title={
                     <a
                       href={item.href}
-                    >{`${item.title} [${item.department}]`}</a>
+                    >{`${item.name} [${item.department}]`}</a>
                   }
-                  description={item.subDescription}
+                  description={item.email ? item.email : ""}
                 />
                 <ListContent data={item} />
               </List.Item>

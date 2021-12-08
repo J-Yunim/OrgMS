@@ -376,12 +376,12 @@ function Panel() {
         width={640}
         // bodyStyle={state.done ? { padding: "72px 0" } : { padding: "28px 0 0" }}
         destroyOnClose
-        visible={visible}
+        visible={deleteitem}
         {...modalFooter}
       >
         {deleteitem ? (
           <p style={{ color: "red" }}>
-            Are you sure you want to delete this project? This action will be
+            Are you sure you want to delete this task? This action will be
             irreversible
           </p>
         ) : (

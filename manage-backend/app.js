@@ -8,13 +8,15 @@ const port = process.env.PORT || 8001; // process.env.port is Heroku's port if y
 
 // Routes
 const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/user");
+const userRouter = require("./routes/user");
+const memberRouter = require("./routes/member");
 app.use(cookieParser());
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+// app.use("/", indexRouter);
+app.use("/", userRouter);
+app.use("/members", memberRouter);
 
 // connect to db
 const mongoose = require("mongoose");
