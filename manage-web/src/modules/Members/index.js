@@ -29,14 +29,22 @@ function Members() {
   const [visible, setVisible] = useState(false);
   const [done, setDone] = useState(false);
   const [current, setcurrent] = useState("");
+  const [loading, setloading] = useState(true);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch.members.getMembers();
-  }, []);
+    getMembers();
+  });
 
-  const { memberList } = useSelector((state) => state.members);
+  async function getMembers() {
+    await dispatch.members.getMembers();
+    setloading(false);
+  }
+
+  const { memberList, total, numChair, numVC, numMember } = useSelector(
+    (state) => state.members
+  );
 
   var addBtn;
 
@@ -47,11 +55,15 @@ function Members() {
 
   const [form] = Form.useForm();
 
-  const showModal = () => {
+  async function showModal() {
+    setcurrent({});
+    console.log(current);
     setVisible(true);
-  };
+  }
 
   const showEditModal = (item) => {
+    setcurrent(item);
+    console.log(current);
     setVisible(true);
   };
 
@@ -76,33 +88,25 @@ function Members() {
       .validateFields(["name", "email", "title", "department", "desc"])
       .then((values) => {
         setDone(true);
-        dispatch.members.saveMembers(values);
-        console.log(values);
+        if (current) {
+          dispatch.members.editMember({ member: values, id: current._id });
+        } else {
+          dispatch.members.saveMembers(values);
+        }
       })
       .catch((errInfo) => {
         return;
       });
   };
 
-  const deleteItem = (id) => {
-    // const { dispatch } = props;
-    // dispatch({
-    //   type: "list/submit",
-    //   payload: { id },
-    // });
-  };
-
-  const editAndDelete = (key, currentItem) => {
-    if (key === "edit") showEditModal(currentItem);
-    else if (key === "delete") {
-      Modal.confirm({
-        title: "Delete Member",
-        content: "Are you sure you want to delete this member?",
-        okText: "OK",
-        cancelText: "Cancel",
-        onOk: () => deleteItem(currentItem.id),
-      });
-    }
+  const deleteItem = (item) => {
+    Modal.confirm({
+      title: "Delete Member",
+      content: "Are you sure you want to delete this member?",
+      okText: "OK",
+      cancelText: "Cancel",
+      onOk: () => deleteItem(item._id),
+    });
   };
 
   const modalFooter = done
@@ -125,13 +129,13 @@ function Members() {
         style={{ minWidth: 120 }}
       >
         <SelectOption value="all">All</SelectOption>
-        <SelectOption value="finance">Finance</SelectOption>
-        <SelectOption value="program">Program</SelectOption>
-        <SelectOption value="operation">Operation</SelectOption>
-        <SelectOption value="social">Social</SelectOption>
-        <SelectOption value="marketing">Marketing</SelectOption>
-        <SelectOption value="outreach">Outreach</SelectOption>
-        <SelectOption value="profdev">Professional Dev</SelectOption>
+        <SelectOption value="Finance">Finance</SelectOption>
+        <SelectOption value="Program">Program</SelectOption>
+        <SelectOption value="Operation">Operation</SelectOption>
+        <SelectOption value="Social">Social</SelectOption>
+        <SelectOption value="Marketing">Marketing</SelectOption>
+        <SelectOption value="Outreach">Outreach</SelectOption>
+        <SelectOption value="Profdev">Professional Dev</SelectOption>
       </Select>
       <Search
         className="extraContentSearch"
@@ -141,16 +145,14 @@ function Members() {
     </div>
   );
 
+  const [pageSize, setpageSize] = useState(5);
+
   const paginationProps = {
     showSizeChanger: true,
     showQuickJumper: true,
-    pageSize: 5,
-    total: 50,
+    pageSize: pageSize,
+    total: total,
   };
-
-  const ListContent = ({ data: { owner, createdAt, percent, status } }) => (
-    <div className="listContent" />
-  );
 
   return (
     <PageHeaderWrapper>
@@ -158,13 +160,13 @@ function Members() {
         <Card bordered={false}>
           <Row>
             <Col sm={8} xs={24}>
-              <Info title="Members" value="18" bordered />
+              <Info title="Members" value={numMember} bordered />
             </Col>
             <Col sm={8} xs={24}>
-              <Info title="Chairs" value="6" bordered />
+              <Info title="Chairs" value={numChair} bordered />
             </Col>
             <Col sm={8} xs={24}>
-              <Info title="Vice Chairs" value="6" />
+              <Info title="Vice Chairs" value={numVC} />
             </Col>
           </Row>
         </Card>
@@ -192,7 +194,7 @@ function Members() {
           <List
             size="large"
             rowKey="id"
-            loading={false}
+            loading={loading}
             pagination={paginationProps}
             dataSource={memberList}
             renderItem={(item) => (
@@ -209,7 +211,7 @@ function Members() {
                   <a
                     onClick={(e) => {
                       e.preventDefault();
-                      editAndDelete("delete", item);
+                      deleteItem(item);
                     }}
                   >
                     Delete
@@ -224,11 +226,10 @@ function Members() {
                   title={
                     <a
                       href={item.href}
-                    >{`${item.name} [${item.department}]`}</a>
+                    >{`${item.name} [${item.department}] - ${item.title}`}</a>
                   }
                   description={item.email ? item.email : ""}
                 />
-                <ListContent data={item} />
               </List.Item>
             )}
           />
@@ -262,7 +263,7 @@ function Members() {
               name="name"
               {...formLayout}
               rules={[{ required: true, message: "Please enter your name" }]}
-              //   initialValue={current.title}
+              initialValue={current && current.name}
             >
               <Input placeholder="your name" />
             </FormItem>
@@ -270,7 +271,7 @@ function Members() {
               label="Email"
               name="email"
               rules={[{ required: true, message: "Please enter your email" }]}
-              //   initialValue={current.title}
+              initialValue={current.email}
               {...formLayout}
             >
               <Input placeholder="your email" />
@@ -279,7 +280,7 @@ function Members() {
               label="Title"
               name="title"
               rules={[{ required: true, message: "Please enter your title" }]}
-              //   initialValue={current.title}
+              initialValue={current.title}
               {...formLayout}
             >
               <Select placeholder="Select from below">
@@ -294,24 +295,24 @@ function Members() {
               rules={[
                 { required: true, message: "Please select your department" },
               ]}
-              //   initialValue={current.owner}
+              initialValue={current.department}
               {...formLayout}
             >
               <Select placeholder="Select from below">
-                <SelectOption value="finance">Finance</SelectOption>
-                <SelectOption value="program">Program</SelectOption>
-                <SelectOption value="operation">Operation</SelectOption>
-                <SelectOption value="social">Social</SelectOption>
-                <SelectOption value="marketing">Marketing</SelectOption>
-                <SelectOption value="outreach">Outreach</SelectOption>
-                <SelectOption value="profdev">Professional Dev</SelectOption>
+                <SelectOption value="Finance">Finance</SelectOption>
+                <SelectOption value="Program">Program</SelectOption>
+                <SelectOption value="Operation">Operation</SelectOption>
+                <SelectOption value="Social">Social</SelectOption>
+                <SelectOption value="Marketing">Marketing</SelectOption>
+                <SelectOption value="Outreach">Outreach</SelectOption>
+                <SelectOption value="Profdev">Professional Dev</SelectOption>
               </Select>
             </FormItem>
             <FormItem
               {...formLayout}
               label="Description"
               name="desc"
-              //   initialValue={current.desc}
+              initialValue={current.desc}
             >
               <TextArea rows={4} />
             </FormItem>

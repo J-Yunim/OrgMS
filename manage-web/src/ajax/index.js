@@ -8,10 +8,12 @@ export const reqLogin = ({ username, password }) =>
 export const reqUser = () => ajax("/user");
 
 export const reqMembers = () => ajax("/members/get");
-export const reqSaveMembers = ({ member }) =>
-  ajax("/members/save", { member }, "POST");
+export const reqSaveMembers = (member) => ajax("/members/save", member, "POST");
+export const reqEditMember = ({ member, id }) =>
+  ajax("/members/edit", { member, id }, "POST");
 
 export const reqSaveTasks = (columns) =>
   ajax("/savetasks", { columns }, "POST");
+
 export const reqSaveProject = (name) => ajax("/saveproject", { name }, "POST");
 export const reqGetTasks = () => ajax("/gettasks");

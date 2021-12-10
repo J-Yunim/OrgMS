@@ -12,7 +12,28 @@ router.get("/get", function (req, res) {
   }
   MemberModel.find({}, {}, function (error, members) {
     if (members) {
-      res.send({ code: 0, data: members });
+      MemberModel.count(function (err, total) {
+        if (total) {
+          MemberModel.count({ title: "Chair" }, function (err, numChair) {
+            if (total) {
+              MemberModel.count({ title: "VC" }, function (err, numVC) {
+                if (total) {
+                  res.send({
+                    code: 0,
+                    data: { members, total, numChair, numVC },
+                  });
+                } else {
+                  res.send({ code: 1, msg: error });
+                }
+              });
+            } else {
+              res.send({ code: 1, msg: error });
+            }
+          });
+        } else {
+          res.send({ code: 1, msg: error });
+        }
+      });
     } else {
       res.send({ code: 1, msg: error });
     }
@@ -21,20 +42,32 @@ router.get("/get", function (req, res) {
 
 // save member list
 router.post("/save", (req, res) => {
-  const { body } = req;
   const { name } = req.body;
   MemberModel.findOne({ name }, async (err, user) => {
     if (user) {
       res.send({ code: 1, msg: "Member already existed" });
     } else {
-      const user = new MemberModel(body);
+      const user = new MemberModel(req.body);
       user.save((err, user) => {
         if (err) {
-          res.send({ msg: "save err", data: body });
+          res.send({ msg: "save err", data: req.body });
         } else {
           res.send({ code: 0 });
         }
       });
+    }
+  });
+});
+
+// edit member
+router.post("/edit", (req, res) => {
+  console.log(req.body);
+  const { member, id } = req.body;
+  MemberModel.replaceOne({ _id: id }, { ...member }, async (err, user) => {
+    if (user) {
+      res.send({ code: 0 });
+    } else {
+      res.send({ code: 1, msg: "Member Not Found" });
     }
   });
 });
